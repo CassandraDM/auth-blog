@@ -53,16 +53,24 @@ const getOneById = async (id: number): Promise<IUser | null> => {
 
 //create
 const create = async (userDTO: IUserDTO) => {
-  const query = "INSERT INTO public.user (username, password) VALUES ($1, $2)";
+  //if username already exist return error
+  const usernameExist = await getOneByUsername(userDTO.username);
+  if (usernameExist) {
+    return "Username already exist";
+  }
+
+  const query =
+    "INSERT INTO Public.user (username, password) VALUES ($1, $2) RETURNING *";
   const values = [userDTO.username, userDTO.password];
 
   try {
-    await connection.query(query, values);
+    const result = await connection.query(query, values);
+    const user = result.rows[0];
 
-    return true;
+    return user;
   } catch (error) {
     console.error("Error creating user:", error);
-    return false;
+    return null;
   }
 };
 

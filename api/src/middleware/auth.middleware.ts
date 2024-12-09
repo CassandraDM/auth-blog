@@ -44,6 +44,7 @@ const authMiddleware = async (
       if (!user) {
         throw new Error("User not found");
       }
+      (req as any).user = user;
 
       next();
     }

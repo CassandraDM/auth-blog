@@ -1,41 +1,46 @@
-# TODO 1
+# Project Overview
 
-- add CRUD BDD
-- edit services for user and post
-- edit controller for user and post
-- protect route POST /posts (create post)
-- protect route DELETE /posts/:id (delete post)
-- protect route UPDATE /posts/:id (update post)
+This project consists of a backend API built with Express and PostgreSQL, and a frontend application built with React and TypeScript.
 
-# TODO 2
+## TODO 1
 
-- Create into db relation user > post (OneToMany)
-- add user relation to insert new post
-- check owner of post when delete, or update
+- Add CRUD operations for the database
+- Edit services for user and post
+- Edit controllers for user and post
+- Protect routes:
+  - POST /posts (create post)
+  - DELETE /posts/:id (delete post)
+  - UPDATE /posts/:id (update post)
 
-# Back API
+## TODO 2
 
-- express
-- postgres
+- Create a relation in the database: user > post (OneToMany)
+- Add user relation to insert new post
+- Check owner of post when deleting or updating
 
-## Routes
+## Backend API
 
-- user (CRUD)
-- posts (CRUD)
+- **Framework**: Express
+- **Database**: PostgreSQL
 
-## Tables
+### Routes
 
-### User
+- **User**: CRUD operations
+- **Posts**: CRUD operations
+
+### Database Tables
+
+#### User
 
 | Column     | Type      | Constraints |
 | ---------- | --------- | ----------- |
 | id         | Int       | PK          |
-| username   | varchar   |             |
+| username   | varchar   | UNIQUE      |
 | password   | varchar   |             |
 | email      | varchar   |             |
 | created_at | timestamp |             |
 
-### Post
+#### Post
 
 | Column     | Type      | Constraints      |
 | ---------- | --------- | ---------------- |
@@ -46,59 +51,13 @@
 | created_at | timestamp |                  |
 | image_path | varchar   |                  |
 
-# Step to init project (Back)
+### Steps to Initialize Project (Backend)
 
-- create folder (api)
-- npm init
-- typescript init
-- install dependencies (express, typescript, ts-node-dev, nedemon, ...)
-- create files & folders project (index, folder src, ...)
-- create routes (users, posts)
-- test with postman
-- up containers
-- create database & tables
-- install dependencies postgres
-- connect db
-
-## folder architecture (api)
-
-- packages.json
-- tsconfig.json
-- docker-compose.yml
-- .env
-- .gitignore
-- src/
-  - index.ts
-  - uesr/
-  - post/
-  - config/
-    - db.ts
-
-# Step to init project (Front)
-
-- npm create vite@latest app -- --template react-ts
-- cd app
-- npm install
-- npm install react-router-dom @types/react-router-dom
-- npm install -D tailwindcss postcss autoprefixer
-- npx tailwindcss init
-
-## Folder architecture (app)
-
-     app/
-     ├── node_module
-     ├── public/
-     └── src/
-         ├── App.tsx
-         ├── index.css
-         └── main.tsx
-     ├── package.json
-     ├── tsconfig.json
-
-# TODO
-
-- components/ (in folders (post, user, ui) add the components needed)
-- pages/ (in a folder (one for user & one for post) add the differents pages)
-- services/ (for post & user // link api with app WARNING: don't forget to install cors!)
-- types/(DTOn& type for post & user )
-- App.tsx ( create route => BrowserRouter, nav with Link... then Routes -> Route path element)
+1. Create folder `api`
+2. Run `npm init -y`
+3. Run `npx tsc --init`
+4. Install dependencies:
+   ```sh
+   npm install express pg
+   npm install -D typescript ts-node-dev @types/node @types/express
+   ```

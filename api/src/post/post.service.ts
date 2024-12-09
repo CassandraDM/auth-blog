@@ -47,7 +47,25 @@ const create = async (postDTO: IPostDTO) => {
 };
 
 //update
-const update = async (id: number, postDTO: IPostDTO): Promise<IPost | null> => {
+const update = async (
+  id: number,
+  postDTO: IPostDTO,
+  userId: number
+): Promise<IPost | null> => {
+  // Check if the post belongs to the user
+  const checkQuery = "SELECT user_id FROM public.post WHERE id = $1";
+  const checkValues = [id];
+  const checkResult = await connection.query(checkQuery, checkValues);
+
+  if (checkResult.rows.length === 0) {
+    throw new Error("Post not found");
+  }
+
+  const postUserId = checkResult.rows[0].user_id;
+  if (postUserId !== userId) {
+    throw new Error("User not authorized to update this post");
+  }
+
   const query =
     "UPDATE Public.post SET user_id = $1, title = $2, content = $3, image_path = $4 WHERE id = $5 RETURNING *";
   const values = [
@@ -70,13 +88,27 @@ const update = async (id: number, postDTO: IPostDTO): Promise<IPost | null> => {
 };
 
 //delete
-const remove = async (id: number) => {
-  const query = "DELETE FROM Public.post WHERE id = $1";
+const remove = async (id: number, userId: number) => {
+  // Check if the post belongs to the user
+  const checkQuery = "SELECT user_id FROM public.post WHERE id = $1";
+  const checkValues = [id];
+  const checkResult = await connection.query(checkQuery, checkValues);
+
+  if (checkResult.rows.length === 0) {
+    throw new Error("Post not found");
+  }
+
+  const postUserId = checkResult.rows[0].user_id;
+  if (postUserId !== userId) {
+    throw new Error("User not authorized to delete this post");
+  }
+
+  // Delete the post
+  const query = "DELETE FROM public.post WHERE id = $1";
   const values = [id];
 
   try {
     await connection.query(query, values);
-
     return true;
   } catch (error) {
     console.error("Error deleting post:", error);
