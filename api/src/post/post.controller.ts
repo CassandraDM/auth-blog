@@ -20,13 +20,19 @@ PostController.get("/:id", async (req: Request, res: Response) => {
   res.send(post);
 });
 
-PostController.post("/", async (req: Request, res: Response) => {
-  const { user_id, title, content, image_path } = req.body;
-  const postDTO = { user_id, title, content, image_path };
-  const post = await PostService.create(postDTO);
+PostController.post(
+  "/",
+  authMiddleware,
+  async (req: Request, res: Response) => {
+    const user = req.user as IUser;
+    const userId = user.id;
+    const { title, content, image_path } = req.body;
+    const postDTO = { user_id: userId, title, content, image_path };
+    const post = await PostService.create(postDTO);
 
-  res.status(201).send(post);
-});
+    res.status(201).send(post);
+  }
+);
 
 PostController.put(
   "/:id",
