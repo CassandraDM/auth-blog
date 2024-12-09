@@ -1,3 +1,18 @@
+# TODO 1
+
+- add CRUD BDD
+- edit services for user and post
+- edit controller for user and post
+- protect route POST /posts (create post)
+- protect route DELETE /posts/:id (delete post)
+- protect route UPDATE /posts/:id (update post)
+
+# TODO 2
+
+- Create into db relation user > post (OneToMany)
+- add user relation to insert new post
+- check owner of post when delete, or update
+
 # Back API
 
 - express

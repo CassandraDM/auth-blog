@@ -1,10 +1,10 @@
-export type UserType = {
+export interface IUser {
   id: number;
   username: string;
   password: string;
-};
+}
 
-export type UserDto = {
+export interface IUserDTO {
   username: string;
   password: string;
-};
+}

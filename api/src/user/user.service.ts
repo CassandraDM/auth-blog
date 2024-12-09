@@ -1,71 +1,106 @@
 import { Request, Response } from "express";
 import connection from "../config/db.config";
+import { IUser, IUserDTO } from "./user.types";
 
 const getAll = async (req: Request, res: Response) => {
   const result = await connection.query("SELECT * FROM Public.user");
-  console.log("end point get all: ", result.rows);
   res.send(result.rows);
 };
 
-//get one
-const getOne = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const result = await connection.query(
-    "SELECT * FROM Public.user WHERE id = $1",
-    [id]
-  );
-  console.log("end point get one: ", result.rows);
-  res.send(result.rows[0]);
+const getOneByUsername = async (username: string): Promise<IUser | null> => {
+  const query = "SELECT * FROM Public.user WHERE username = $1";
+  const values = [username];
+
+  const result = await connection.query(query, values);
+  const user = result.rows[0];
+
+  if (!user) {
+    return null;
+  }
+
+  return user;
 };
 
-//create
-const create = async (req: Request, res: Response) => {
+const getOneById = async (id: number): Promise<IUser | null> => {
+  const query = "SELECT * FROM public.user WHERE id = $1";
+  const values = [id];
+
   try {
-    const {
-      username,
-      password,
-      email,
-    }: { username: string; password: string; email: string } = req.body;
+    const result = await connection.query(query, values);
+    const user = result.rows[0];
 
-    const result = await connection.query(
-      "INSERT INTO Public.user (username, password, email) VALUES ($1, $2, $3) RETURNING *",
-      [username, password, email]
-    );
+    return user;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return null;
+  }
+};
 
-    console.log("end point create: ", result.rows);
-    res.status(201).json(result.rows[0]);
-  } catch (err) {
-    console.error("Error creating user: ", err);
-    res.status(500).send("Error creating user");
+// //get one
+// const getOne = async (id: number): Promise<IUser | null> => {
+//   const query = "SELECT * FROM users WHERE id = $1";
+//   const values = [id];
+
+//   try {
+//     const result = await connection.query(query, values);
+//     const user = result.rows[0];
+
+//     return user;
+//   } catch (error) {
+//     console.error("Error fetching user:", error);
+//     return null;
+//   }
+// };
+
+//create
+const create = async (userDTO: IUserDTO) => {
+  const query = "INSERT INTO public.user (username, password) VALUES ($1, $2)";
+  const values = [userDTO.username, userDTO.password];
+
+  try {
+    await connection.query(query, values);
+
+    return true;
+  } catch (error) {
+    console.error("Error creating user:", error);
+    return false;
   }
 };
 
 //update
-const update = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { username, password, email } = req.body;
-  const result = await connection.query(
-    "UPDATE Public.user SET username = $1, password = $2, email = $3 WHERE id = $4 RETURNING *",
-    [username, password, email, id]
-  );
-  console.log("end point update: ", result.rows);
-  res.send(result.rows[0]);
+const update = async (id: number, userDTO: IUserDTO): Promise<IUser | null> => {
+  const query =
+    "UPDATE Public.user SET username = $1, password = $2 WHERE id = $3 RETURNING *";
+  const values = [userDTO.username, userDTO.password, id];
+
+  try {
+    const result = await connection.query(query, values);
+    const user = result.rows[0];
+
+    if (!user) {
+      return null;
+    }
+
+    return user;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return null;
+  }
 };
 
 //delete
-const remove = async (req: Request, res: Response) => {
-  const { id } = req.params;
+const remove = async (id: number) => {
   const result = await connection.query(
     "DELETE FROM Public.user WHERE id = $1 RETURNING *",
     [id]
   );
-  console.log("end point delete: ", result.rows);
-  res.send({ user: result.rows[0], message: "User deleted" });
+  const user = result.rows[0];
 };
 
 export default {
   getAll,
-  getOne,
+  getOneByUsername,
+  getOneById,
   create,
   update,
   remove,

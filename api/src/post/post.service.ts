@@ -7,6 +7,14 @@ const getAll = async (req: Request, res: Response) => {
   res.send(result.rows);
 };
 
+const getOneById = async (id: number) => {
+  const result = await connection.query(
+    "SELECT * FROM Public.post WHERE id = $1",
+    [id]
+  );
+  return result.rows[0];
+};
+
 //get one
 const getOne = async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -67,6 +75,7 @@ const remove = async (req: Request, res: Response) => {
 
 export default {
   getAll,
+  getOneById,
   getOne,
   create,
   update,

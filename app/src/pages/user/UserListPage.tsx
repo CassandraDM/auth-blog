@@ -22,9 +22,7 @@ const UserList = () => {
         <button onClick={fetchUsers}>Fetch Users</button>
         <ul>
           {users.map((user) => (
-            <li key={user.id}>
-              {user.username} - {user.email}
-            </li>
+            <li key={user.id}>{user.username}</li>
           ))}
         </ul>
       </div>
