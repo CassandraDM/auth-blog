@@ -3,7 +3,10 @@ import PostService from "./post.service";
 
 const PostController = Router();
 
-PostController.get("/", PostService.getAll);
+PostController.get("/", async (req: Request, res: Response) => {
+  const posts = await PostService.getAll();
+  res.send(posts);
+});
 
 PostController.get("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;

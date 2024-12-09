@@ -1,11 +1,9 @@
-import { Request, Response } from "express";
 import connection from "../config/db.config";
 import { IPost, IPostDTO } from "./post.type";
-import { IUserDTO } from "../user/user.types";
 
-const getAll = async (req: Request, res: Response) => {
+const getAll = async () => {
   const result = await connection.query("SELECT * FROM Public.post");
-  res.send(result.rows);
+  return result.rows;
 };
 
 const getOneById = async (id: number) => {
@@ -78,8 +76,11 @@ const remove = async (id: number) => {
 
   try {
     await connection.query(query, values);
+
+    return true;
   } catch (error) {
     console.error("Error deleting post:", error);
+    return false;
   }
 };
 

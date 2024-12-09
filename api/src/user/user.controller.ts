@@ -3,7 +3,10 @@ import UserService from "./user.service";
 
 const UserController = Router();
 
-UserController.get("/", UserService.getAll);
+UserController.get("/", async (req: Request, res: Response) => {
+  const users = await UserService.getAll();
+  res.send(users);
+});
 
 UserController.get("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -18,6 +21,7 @@ UserController.get("/:id", async (req: Request, res: Response) => {
 UserController.post("/", async (req: Request, res: Response) => {
   const { username, password } = req.body;
   const userDTO = { username, password };
+
   const user = await UserService.create(userDTO);
 
   res.status(201).send(user);

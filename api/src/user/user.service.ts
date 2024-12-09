@@ -1,10 +1,9 @@
-import { Request, Response } from "express";
 import connection from "../config/db.config";
 import { IUser, IUserDTO } from "./user.types";
 
-const getAll = async (req: Request, res: Response) => {
+const getAll = async () => {
   const result = await connection.query("SELECT * FROM Public.user");
-  res.send(result.rows);
+  return result.rows;
 };
 
 const getOneByUsername = async (username: string): Promise<IUser | null> => {
