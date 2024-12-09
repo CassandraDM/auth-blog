@@ -1,11 +1,11 @@
-import { Router } from "express";
+import { Response, Request, Router } from "express";
 import PostService from "./post.service";
 
 const PostController = Router();
 
 PostController.get("/", PostService.getAll);
 
-PostController.get("/:id", async (req, res) => {
+PostController.get("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   const post = await PostService.getOneById(+id);
   if (!post) {
@@ -15,10 +15,28 @@ PostController.get("/:id", async (req, res) => {
   res.send(post);
 });
 
-PostController.post("/", PostService.create);
+PostController.post("/", async (req: Request, res: Response) => {
+  const { user_id, title, content, image_path } = req.body;
+  const postDTO = { user_id, title, content, image_path };
+  const post = await PostService.create(postDTO);
 
-PostController.put("/:id", PostService.update);
+  res.status(201).send(post);
+});
 
-PostController.delete("/:id", PostService.remove);
+PostController.put("/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { user_id, title, content, image_path } = req.body;
+  const postDTO = { user_id, title, content, image_path };
+  const post = await PostService.update(+id, postDTO);
+
+  res.send(post);
+});
+
+PostController.delete("/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  await PostService.remove(+id);
+
+  res.send({ message: "Post deleted" });
+});
 
 export default PostController;

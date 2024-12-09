@@ -90,11 +90,14 @@ const update = async (id: number, userDTO: IUserDTO): Promise<IUser | null> => {
 
 //delete
 const remove = async (id: number) => {
-  const result = await connection.query(
-    "DELETE FROM Public.user WHERE id = $1 RETURNING *",
-    [id]
-  );
-  const user = result.rows[0];
+  const query = "DELETE FROM Public.user WHERE id = $1";
+  const values = [id];
+
+  try {
+    await connection.query(query, values);
+  } catch (error) {
+    console.error("Error deleting user:", error);
+  }
 };
 
 export default {
