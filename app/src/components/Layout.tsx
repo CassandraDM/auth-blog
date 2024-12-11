@@ -4,7 +4,10 @@ import Navbar from "./Navbar";
 
 function Layout() {
   const location = useLocation();
-  const showNavbar = location.pathname !== "/";
+  const showNavbar =
+    location.pathname !== "/" &&
+    location.pathname !== "/signin" &&
+    location.pathname !== "/signup";
 
   return (
     <div>

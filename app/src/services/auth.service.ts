@@ -11,11 +11,15 @@ export const authentification = async (user: UserDto) => {
     body: JSON.stringify(user),
   });
   if (!response.ok) {
-    throw new Error("Échec de la connexion");
+    throw new Error("User not registered");
   }
   const data = await response.json();
   localStorage.setItem("token", data.token);
-  return data.token;
+  return data;
+};
+
+export const getToken = () => {
+  return localStorage.getItem("token");
 };
 
 export const register = async (user: UserDto) => {
