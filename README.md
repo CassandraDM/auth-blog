@@ -18,6 +18,43 @@ This project consists of a backend API built with Express and PostgreSQL, and a 
 - Add user relation to insert new post
 - Check owner of post when deleting or updating
 
+## TODO 3 FRONT
+
+### Authentication
+
+```typescript
+const response = await fetch("https://api.example.com/auth/signin", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ username, password }),
+});
+
+if (!response.ok) {
+  throw new Error("Échec de la connexion");
+}
+
+const data = await response.json();
+
+// Store the token in localStorage
+localStorage.setItem("token", data.token);
+```
+
+### Authorization
+
+```typescript
+// Retrieve the token
+const token = localStorage.getItem("token");
+
+const response = await fetch("https://api.example.com/posts", {
+  method: "GET",
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
+```
+
 ## Backend API
 
 - **Framework**: Express
