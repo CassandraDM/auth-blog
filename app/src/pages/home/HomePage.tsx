@@ -1,4 +1,4 @@
-import Button from "../../components/Button";
+import Button from "../../components/ui/Button";
 
 const HomePage = () => {
   return (
@@ -6,8 +6,8 @@ const HomePage = () => {
       <h1 className="text-4xl font-bold mb-4">Welcome to Auth Blog!</h1>
       <p className="text-lg mb-8">Sign in or sign up to start blogging</p>
       <div className="space-x-4">
-        <Button variants="signin" />
-        <Button variants="signup" />
+        <Button variant="signin" text="Sign In" />
+        <Button variant="signup" text="Sign Up" />
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { UserDto } from "../../types/user.type";
 import { authentification } from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
+import Input from "../../components/ui/Input";
 
 const SigninPage = () => {
   const [credentials, setCredentials] = useState<UserDto>({
@@ -31,9 +32,9 @@ const SigninPage = () => {
 
   return (
     <div>
-      <h1>Signin Page</h1>
+      <h1>Sign In Page</h1>
       <form onSubmit={handleSubmit}>
-        <input
+        <Input
           type="text"
           name="username"
           placeholder="Username"
@@ -41,7 +42,7 @@ const SigninPage = () => {
           onChange={handleChange}
           required
         />
-        <input
+        <Input
           type="password"
           name="password"
           placeholder="Password"
@@ -49,7 +50,7 @@ const SigninPage = () => {
           onChange={handleChange}
           required
         />
-        <button type="submit">Go!</button>
+        <button>Go!</button>
         {errorMessage && <p>{errorMessage}</p>}
 
         <p>

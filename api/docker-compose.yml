@@ -1,5 +1,3 @@
-version: "4.32"
-
 services:
   postgres:
     image: postgres:15

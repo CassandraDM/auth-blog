@@ -6,6 +6,7 @@ import HomePage from "./pages/home/HomePage";
 import Layout from "./components/Layout";
 import SigninPage from "./pages/auth/SigninPage";
 import SignupPage from "./pages/auth/SignupPage";
+import UserSinglePage from "./pages/user/UserSinglePage";
 
 function App() {
   return (
@@ -16,8 +17,9 @@ function App() {
           <Route path="signin" element={<SigninPage />} />
           <Route path="signup" element={<SignupPage />} />
           <Route path="post" element={<PostListPage />} />
-          <Route path=":id" element={<PostSinglePage />} />
+          <Route path="post/:id" element={<PostSinglePage />} />
           <Route path="user" element={<UserListPage />} />
+          <Route path="user/:id" element={<UserSinglePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

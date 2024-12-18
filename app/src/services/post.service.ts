@@ -38,9 +38,12 @@ export const update = async (id: number, post: PostDto) => {
   return data;
 };
 
-export const remove = async (id: number) => {
+export const remove = async (id: number, token: string) => {
   const response = await fetch(`${API_URL}/posts/${id}`, {
     method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
   const data = await response.json();
   return data;
