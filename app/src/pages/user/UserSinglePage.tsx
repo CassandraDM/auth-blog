@@ -36,7 +36,6 @@ const UserSinglePage = () => {
     <div className="p-5 max-w-3xl mx-auto">
       <div className="bg-white rounded-lg shadow-md p-5 mb-5">
         <h1 className="text-3xl font-bold mb-3">{user.username}</h1>
-        <p className="text-lg text-gray-700">{user.email}</p>
       </div>
       <h2 className="text-2xl font-bold mb-5">Posts by {user.username}</h2>
       <div className="bg-white rounded-lg shadow-md p-5">
