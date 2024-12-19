@@ -2,11 +2,18 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { findAll, remove } from "../../services/post.service";
 import { PostType } from "../../types/post.type";
+import { jwtDecode } from "jwt-decode";
 
 const PostListPage = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  let userId: number | null = null;
+
+  if (token) {
+    const decodedToken: any = jwtDecode(token);
+    userId = decodedToken.id;
+  }
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -24,6 +31,15 @@ const PostListPage = () => {
     navigate(`/post/edit/${id}`);
   };
 
+  const handleDeleteClick = async (id: number) => {
+    if (token) {
+      await remove(id, token);
+      setPosts(posts.filter((post) => post.id !== id));
+    } else {
+      console.error("Token is not available");
+    }
+  };
+
   return (
     <div className="p-5 max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold mb-5">Post List</h1>
@@ -39,20 +55,22 @@ const PostListPage = () => {
             >
               {post.title}
             </span>
-            <div>
-              <button
-                className="ml-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-700 transition-colors duration-300"
-                onClick={() => handleEditClick(post.id)}
-              >
-                Edit
-              </button>
-              <button
-                className="ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-700 transition-colors duration-300"
-                onClick={() => token && remove(post.id, token)}
-              >
-                Delete
-              </button>
-            </div>
+            {userId === post.user_id && (
+              <div>
+                <button
+                  className="ml-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-700 transition-colors duration-300"
+                  onClick={() => handleEditClick(post.id)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-700 transition-colors duration-300"
+                  onClick={() => handleDeleteClick(post.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
           </li>
         ))}
       </ul>

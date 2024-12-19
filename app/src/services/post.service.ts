@@ -14,11 +14,12 @@ export const findById = async (id: number) => {
   return data;
 };
 
-export const create = async (post: PostDto) => {
+export const create = async (post: PostDto, token: string) => {
   const response = await fetch(`${API_URL}/posts`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(post),
   });
@@ -26,11 +27,12 @@ export const create = async (post: PostDto) => {
   return data;
 };
 
-export const update = async (id: number, post: PostDto) => {
+export const update = async (id: number, post: PostDto, token: string) => {
   const response = await fetch(`${API_URL}/posts/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(post),
   });
@@ -42,6 +44,7 @@ export const remove = async (id: number, token: string) => {
   const response = await fetch(`${API_URL}/posts/${id}`, {
     method: "DELETE",
     headers: {
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
   });

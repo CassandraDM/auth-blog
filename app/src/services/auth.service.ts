@@ -14,12 +14,8 @@ export const authentification = async (user: UserDto) => {
     throw new Error("User not registered");
   }
   const data = await response.json();
-  localStorage.setItem("token", data.token);
+  localStorage.setItem("token", data.access_token);
   return data;
-};
-
-export const getToken = () => {
-  return localStorage.getItem("token");
 };
 
 export const register = async (user: UserDto) => {
@@ -35,4 +31,8 @@ export const register = async (user: UserDto) => {
   }
   const data = await response.json();
   return data;
+};
+
+export const logout = () => {
+  localStorage.removeItem("token");
 };

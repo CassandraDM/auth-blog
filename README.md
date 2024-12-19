@@ -55,6 +55,18 @@ const response = await fetch("https://api.example.com/posts", {
 });
 ```
 
+## TODO 4
+
+https://tanstack.com/query/v3/
+https://react-hook-form.com/
+
+## TODO 5
+
+- setting page user
+- Edit email
+- Edit password
+- bcrypt
+
 ## Backend API
 
 - **Framework**: Express
